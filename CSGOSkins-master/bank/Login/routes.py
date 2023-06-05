@@ -121,4 +121,4 @@ def logout():
 def account():
     mysession["state"]="account"
     print(mysession)
-    return render_template('account.html', title='Account')
+    return render_template('account.html', title='Inventory')

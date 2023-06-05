@@ -1,4 +1,3 @@
-\i schema_drop.sql
 
 CREATE TABLE IF NOT EXISTS Customers(
 	CPR_number integer PRIMARY KEY,
@@ -94,8 +93,3 @@ CREATE TABLE IF NOT EXISTS Certificates_of_deposit(
 	rate integer    --at fixed rate certificated´s of deposite
 );
 COMMENT ON COLUMN Certificates_of_deposit.rate IS 'at fixed rate certificated´s of deposite';
-
-\i sql_ddl/vw_cd_sum.sql
-\i sql_ddl/vw_invest_accounts.sql
-\i sql_ddl/vw_invest_certificates.sql
-\i sql_ddl/vw_tdw.sql
