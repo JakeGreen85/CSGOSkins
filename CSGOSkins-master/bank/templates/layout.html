@@ -28,21 +28,7 @@
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="{{ url_for('Login.home') }}">Home</a>
               <!-- Dropdown top right -->
-              {% if current_user.is_authenticated %}
-                <li class="dropdown">
-                 <a href="#" class="nav-item nav-link dropdown-toggle" data-toggle="dropdown">Market<b class="caret"></b></a>
-                 <ul class="dropdown-menu">
-                    <li><a class="nav-item nav-link" href="{{ url_for('Login.account') }}">Inventory</a></li>
-                    <li><a class="nav-item nav-link" href="{{ url_for('Customer.transfer') }}">Transfer</a></li>
-                    <li class="divider"></li>
-                    <li><a class="nav-item nav-link" href="{{ url_for('Customer.invest') }}">Investments</a></li>
-                    <li class="divider"></li>
-                    <li><a class="nav-item nav-link" href="https://www.pgadmin.org">site pgAdmin</a></li>
-                    <li><a class="nav-item nav-link" href="http://127.0.0.1:58653/browser/ ">pgAdmin4</a></li>
-                 </ul>
-               </li>
-              {% else %}
-              {% endif %}
+              <a class="nav-item nav-link" href="{{ url_for('Login.market') }}">Market</a>
               <a class="nav-item nav-link" href="{{ url_for('Login.about') }}">About</a>
             </div>
             <!-- Navbar Right Side -->
@@ -50,23 +36,14 @@
               {% if current_user.is_authenticated %}
                 <p class="nav-item nav-link">Balance: $0</p>
 
-			   {% if "customer" == role %}
-                <a class="nav-item nav-link" href="{{ url_for('Customer.transfer') }}">Transfer</a>
-                <a class="nav-item nav-link" href="{{ url_for('Customer.invest') }}">Investments</a>
- 			   {% endif %}
-		       {% if role == 'employee' %}
-                <a class="nav-item nav-link" href="{{ url_for('Employee.addcustomer') }}">Add customer</a>
-                <a class="nav-item nav-link" href="{{ url_for('Employee.investe') }}">Investments</a>
- 			   {% endif %}
-
-                
                 <a href="#" class="nav-item nav-link dropdown-toggle" data-toggle="dropdown">{{ current_user.name }}<b class="caret"></b></a>
                  <ul class="dropdown-menu">
-                    <li><a class="nav-item nav-link" href="{{ url_for('Login.account') }}">Inventory</a></li>
+                    <li><a class="nav-item nav-link" href="{{ url_for('Login.account') }}">Account</a></li>
                     <li><a class="nav-item nav-link" href="{{ url_for('Login.logout') }}">Logout</a></li>
                  </ul>
               {% else %}
                 <a class="nav-item nav-link" href="{{ url_for('Login.login') }}">Login</a>
+                <a class="nav-item nav-link" href="{{ url_for('Login.createaccount') }}">Sign-up</a>
               {% endif %}
             </div>
           </div>
@@ -90,32 +67,26 @@
         <!-- Right Side box-->
         <div class="col-md-4">
           <div class="content-section">
-            <h3>Account</h3>
+            <h3>{{ current_user.name }}</h3>
               <ul class="list-group">
               {% if current_user.is_authenticated %}
 			    
 				
-			   {% if "customer" == role %}
-			        <p>CSGO Market-customer</p> 
-                <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Customer.transfer') }}">Transfer</a></li>
-                <li class="list-group-item list-group-item-light">Checking Accounts</li>
-                <li class="list-group-item list-group-item-light">Investment Accounts</li>
-                <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Customer.invest') }}">View investment accounts</a></li>
+			   {% if role == 'customer' %}
+			        <p>Customer</p> 
+              <li class="list-group-item list-group-item-light">Balance: $0</li>
+                <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Customer.addfunds') }}">Add Funds</a></li>
+                <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Customer.inventory') }}">Inventory</a></li>
  			   {% endif %}
 
 
 			      {% if role == 'employee' %}
-			        <p>CSGO Market-employee</p> 
-                <li class="list-group-item list-group-item-light">Transfer</li>
-                <li class="list-group-item list-group-item-light">Checking Accounts</li>
-                <li class="list-group-item list-group-item-light">Investment Accounts</li>
-                <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Employee.investe') }}">View investment accounts</a></li>
+			        <p>Employee</p> 
+              <li class="list-group-item list-group-item-light">Balance: $0</li>
+              <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Customer.addfunds') }}">Add Funds</a></li>
+                <li class="list-group-item list-group-item-light">Add Item</li>
+                <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Employee.inventory') }}">Inventory</a></li>
  			      {% endif %}
-				
-				
-               <li class="list-group-item list-group-item-light">etc</li>
-              {% else %}
-                <li class="list-group-item list-group-item-light">etc</li>
               {% endif %}
               </ul>
             </p>

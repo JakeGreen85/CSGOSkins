@@ -58,8 +58,8 @@ def investe():
 
 
 
-@Employee.route("/transfer", methods=['GET', 'POST'])
-def transfer():
+@Employee.route("/addfunds", methods=['GET', 'POST'])
+def addfunds():
     if not current_user.is_authenticated:
         flash('Please Login.','danger')
         return redirect(url_for('Login.login'))
@@ -98,7 +98,7 @@ def transfer():
     return render_template('transfer.html', title='Transfer', drop_cus_acc=dropdown_accounts, form=form)
 
 
-@Employee.route("/addcustomer", methods=['GET', 'POST'])
+@Employee.route("/createaccount", methods=['GET', 'POST'])
 def addcustomer():
     
     if not current_user.is_authenticated:
@@ -117,9 +117,9 @@ def addcustomer():
         CPR_number=form.CPR_number.data
         password=hashed_password
         insert_Customers(name, CPR_number, password)
-        flash('Account has been created! The customer is now able to log in', 'success')
+        flash('Account has been created! You can now login', 'success')
         return redirect(url_for('Login.home'))
-    return render_template('addcustomer.html', title='Add Customer', form=form)
+    return render_template('createaccount.html', title='Create Account', form=form)
 
 
 @Employee.route("/manageCustomer", methods=['GET', 'POST'])
@@ -151,4 +151,7 @@ def manageCustomer():
         return redirect(url_for('Login.home'))
     return render_template('transfer.html', title='Transfer', form=form)
 
-
+@Employee.route("/inventory", methods=['GET', 'POST'])
+def inventory():
+    role=mysession["role"]
+    return render_template('inventory.html', title="Inventory", role=role)

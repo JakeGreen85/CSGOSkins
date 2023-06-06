@@ -1,8 +1,8 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
-from bank.forms import CustomerLoginForm, EmployeeLoginForm
+from bank.forms import CustomerLoginForm, EmployeeLoginForm, AddCustomerForm
 from flask_login import login_user, current_user, logout_user, login_required
-from bank.models import Customers, select_Customers, select_Employees
+from bank.models import Customers, select_Customers, select_Employees, insert_Customers
 
 #202212
 from bank import roles, mysession
@@ -30,7 +30,8 @@ def about():
     #202212
     mysession["state"]="about"
     print(mysession)
-    return render_template('about.html', title='About')
+    role=mysession["role"]
+    return render_template('about.html', title='About', role=role)
 
 
 @Login.route("/login", methods=['GET', 'POST'])
@@ -121,4 +122,29 @@ def logout():
 def account():
     mysession["state"]="account"
     print(mysession)
-    return render_template('account.html', title='Inventory')
+    role=mysession["role"]
+    return render_template('account.html', title='Account', role=role)
+
+@Login.route("/market")
+def market():
+    if not current_user.is_authenticated:
+        flash('You must be logged in to access this page', 'danger')
+        return redirect(url_for('Login.home'))    
+    mysession["state"]="market"
+    print(mysession)      
+    role=mysession["role"]
+    return render_template('market.html', title='Market', role=role)
+
+@Login.route("/createaccount", methods=['GET', 'POST'])
+def createaccount():
+
+    form = AddCustomerForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        name=form.username.data
+        CPR_number=form.CPR_number.data
+        password=hashed_password
+        insert_Customers(name, CPR_number, password)
+        flash('Account has been created! You can now login', 'success')
+        return redirect(url_for('Login.home'))
+    return render_template('createaccount.html', title='Create Account', form=form)

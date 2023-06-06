@@ -21,8 +21,8 @@ iCustomer = 2
 Customer = Blueprint('Customer', __name__)
 
 
-@Customer.route("/transfer", methods=['GET', 'POST'])
-def transfer():
+@Customer.route("/addfunds", methods=['GET', 'POST'])
+def addfunds():
     if not current_user.is_authenticated:
         flash('Please Login.','danger')
         return redirect(url_for('Login.login'))
@@ -50,6 +50,7 @@ def transfer():
     form = TransferForm()
     form.sourceAccount.choices = drp_accounts
     form.targetAccount.choices = drp_accounts
+    role=mysession["role"]
     if form.validate_on_submit():
         date = datetime.date.today()
         amount = form.amount.data
@@ -58,43 +59,22 @@ def transfer():
         transfer_account(date, amount, from_account, to_account)
         flash('Transfer succeed!', 'success')
         return redirect(url_for('Login.home'))
-    return render_template('transfer.html', title='Transfer', drop_cus_acc=dropdown_accounts, form=form)
+    return render_template('transfer.html', title='Transfer', drop_cus_acc=dropdown_accounts, form=form, role=role)
 
 
 
 @Customer.route("/invest", methods=['GET', 'POST'])
 def invest():
 
-    #202212
-    # Her laves et login check
     if not current_user.is_authenticated:
         flash('Please Login.','danger')
         return redirect(url_for('Login.login'))
 
-    #202212
-    #customer
-    # CUS4; CUS4-1, CUS4-4
-    # TODO-CUS There us no customer counterpart
-    if not mysession["role"] == roles[iCustomer]:
-        flash('Viewing investents is customer only.','danger')
-        return redirect(url_for('Login.login'))
-
-
-    mysession["state"]="invest"
+    mysession["state"]="inventory"
     print(mysession)
 
-    #202212
-    # i think this view works for employee and customer but the
-    # view is different as employees have customers.
-    # CUS4; CUS4-1, CUS4-4
-    print(current_user.get_id())
-
-    investments = select_cus_investments(current_user.get_id())
-    investment_certificates = select_cus_investments_with_certificates(current_user.get_id())
-    investment_sums = select_cus_investments_certificates_sum(current_user.get_id())
-    return render_template('invest.html', title='Investments', inv=investments
-    , inv_cd_list=investment_certificates
-    , inv_sums=investment_sums)
+    role = mysession["role"]
+    return render_template('inventory.html', title='Inventory', role=role)
 
 
 @Customer.route("/deposit", methods=['GET', 'POST'])
@@ -134,3 +114,8 @@ def summary():
         flash('Succeed!', 'success')
         return redirect(url_for('Login.home'))
     return render_template('deposit.html', title='Deposit', form=form)
+
+@Customer.route("/inventory", methods=['GET', 'POST'])
+def inventory():
+    role=mysession["role"]
+    return render_template('inventory.html', title="Inventory", role=role)

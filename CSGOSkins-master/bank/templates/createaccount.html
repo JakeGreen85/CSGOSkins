@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h4><font color="tomato">Note: This page should only be accessible by employees!</font></h4> 
+    <h4><font color="tomato">Note: This page should be accessed before logging in!</font></h4> 
     <div class="content-section">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Add a new customer</legend>
+                <legend class="border-bottom mb-4">Create Account</legend>
                 <div class="form-group">
                     {{ form.username.label(class="form-control-label") }}
 
