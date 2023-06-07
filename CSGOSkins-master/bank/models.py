@@ -9,10 +9,10 @@ def load_user(user_id):
     cur = conn.cursor()
 
     schema = 'customers'
-    id = 'cpr_number'
+    id = 'user_id'
     if str(user_id).startswith('60'):
         schema = 'employees'
-        id = 'id'
+        id = 'user_id'
 
     user_sql = sql.SQL("""
     SELECT * FROM {}
@@ -47,10 +47,8 @@ class Asset(tuple, UserMixin):
 class Customers(tuple, UserMixin):
     def __init__(self, user_data):
         self.CPR_number = user_data[0]
-        self.risktype = False
-        self.password = user_data[2]
-        self.name = user_data[3]
-        self.address = user_data[4]
+        self.password = user_data[1]
+        self.name = user_data[2]
         self.role = "customer"
 
     def get_id(self):
@@ -129,35 +127,35 @@ def get_assets_of_quality(quality):
     return items
     
 
-def insert_Customers(name, CPR_number, password):
+def insert_Customers(userid, name, password):
     cur = conn.cursor()
     sql = """
-    INSERT INTO Customers(name, CPR_number, password)
+    INSERT INTO Customers(User_id, name, password)
     VALUES (%s, %s, %s)
     """
-    cur.execute(sql, (name, CPR_number, password))
+    cur.execute(sql, (userid, name, password))
     # Husk commit() for INSERT og UPDATE, men ikke til SELECT!
     conn.commit()
     cur.close()
 
-def select_Customers(CPR_number):
+def select_Customers(userID):
     cur = conn.cursor()
     sql = """
     SELECT * FROM Customers
-    WHERE CPR_number = %s
+    WHERE User_id = %s
     """
-    cur.execute(sql, (CPR_number,))
+    cur.execute(sql, (userID))
     user = Customers(cur.fetchone()) if cur.rowcount > 0 else None;
     cur.close()
     return user
 
-def select_Employees(id):
+def select_Employees(userID):
     cur = conn.cursor()
     sql = """
     SELECT * FROM Employees
-    WHERE id = %s
+    WHERE User_id = %s
     """
-    cur.execute(sql, (id,))
+    cur.execute(sql, (userID))
     user = Employees(cur.fetchone()) if cur.rowcount > 0 else None;
     cur.close()
     return user

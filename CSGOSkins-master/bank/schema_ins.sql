@@ -5,8 +5,8 @@ DELETE FROM Assets;
 DELETE FROM Inventory;
 
 -- INSERT CUSTOMERS
-INSERT INTO public.Customers(User_id, password, name, address)
-VALUES (0001,'$2b$12$KFkp1IEMGT4QrWwjPGhE3ejOv6Z3pYhx/S4qOoFbanR2sMiZqgeJO', 'Jakob', 'aud Auditorium A, bygning 1, 1. sal Universitetsparken 15 (Zoo)'), (0002, '$2b$12$KFkp1IEMGT4QrWwjPGhE3ejOv6Z3pYhx/S4qOoFbanR2sMiZqgeJO', 'Laust', 'øv* Kursussal 1, bygning 3, 1.sal Universitetsparken 15 (Zoo)');
+INSERT INTO public.Customers(User_id, password, name)
+VALUES (0001,'$2b$12$KFkp1IEMGT4QrWwjPGhE3ejOv6Z3pYhx/S4qOoFbanR2sMiZqgeJO', 'Jakob'), (0002, '$2b$12$KFkp1IEMGT4QrWwjPGhE3ejOv6Z3pYhx/S4qOoFbanR2sMiZqgeJO', 'Laust');
 
 
 -- INSERT EMPLOYEES

@@ -2,8 +2,7 @@
 CREATE TABLE IF NOT EXISTS Customers(
 	User_id integer PRIMARY KEY,
 	password varchar(120),
-	name varchar(60),
-	address text
+	name varchar(60)
 );
 
 CREATE TABLE IF NOT EXISTS Assets(
@@ -23,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Employees(
 );
 
 CREATE TABLE IF NOT EXISTS Accounts(
-	User_id integer  REFERENCES Customers(User_id),
+	User_id integer REFERENCES Customers(User_id),
 	Balance integer
 );
 
