@@ -1,9 +1,9 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
 from bank.forms import DepositForm, AddCustomerForm
-from bank.forms import TransferForm
+from bank.forms import TransferForm, AddFundsForm
 from flask_login import current_user
-from bank.models import Transfers, CheckingAccount, InvestmentAccount,  transfer_account, insert_Customers
+from bank.models import Transfers, CheckingAccount, InvestmentAccount,  transfer_account, insert_Customers, update_CheckingAccount
 import sys, datetime
 
 #202212
@@ -58,8 +58,8 @@ def investe():
 
 
 
-@Employee.route("/addfunds", methods=['GET', 'POST'])
-def addfunds():
+@Employee.route("/transfer", methods=['GET', 'POST'])
+def transfer():
     if not current_user.is_authenticated:
         flash('Please Login.','danger')
         return redirect(url_for('Login.login'))
@@ -155,3 +155,24 @@ def manageCustomer():
 def inventory():
     role=mysession["role"]
     return render_template('inventory.html', title="Inventory", role=role)
+
+@Employee.route("/addfunds", methods=['GET', 'POST'])
+def addfunds():
+    if not current_user.is_authenticated:
+        flash('Please Login.','danger')
+        return redirect(url_for('Login.login'))
+
+    if not mysession["role"] == roles[iEmployee]:
+        flash('Only employees can add funds','danger')
+        return redirect(url_for('Login.login'))
+
+    form = AddFundsForm()
+    role=mysession["role"]
+    if form.validate_on_submit():
+        date = datetime.date.today()
+        amount = form.amount.data
+        to_customer = form.customer.data
+        update_CheckingAccount(amount, to_customer)
+        flash('Transfer succeed!', 'success')
+        return redirect(url_for('Login.home'))
+    return render_template('addfunds.html', title='Add Funds', form=form, role=role)

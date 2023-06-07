@@ -118,6 +118,15 @@ def update_CheckingAccount(amount, CPR_number):
     # Husk commit() for INSERT og UPDATE, men ikke til SELECT!
     conn.commit()
     cur.close()
+
+def select_CheckingAccount(CPR_number):
+    cur = conn.cursor()
+    sql = """
+    SELECT CheckingAccount
+    WHERE CPR_number = %s
+    """
+    cur.execute(sql, (CPR_number))
+    cur.close()
     
 def transfer_account(date, amount, from_account, to_account):
     cur = conn.cursor()

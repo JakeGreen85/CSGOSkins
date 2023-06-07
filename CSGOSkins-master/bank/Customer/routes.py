@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
 from bank.forms import DepositForm, InvestForm
-from bank.forms import TransferForm
+from bank.forms import TransferForm, AddFundsForm
 from flask_login import current_user
 from bank.models import CheckingAccount, InvestmentAccount, update_CheckingAccount
 from bank.models import select_cus_investments_with_certificates, select_cus_investments, select_cus_investments_certificates_sum
@@ -27,39 +27,20 @@ def addfunds():
         flash('Please Login.','danger')
         return redirect(url_for('Login.login'))
 
-    # CUS7 is the customer transfer. Create new endpoint.
-    # EUS10 is the employee transfer.
-    # manageCustor/ er EUS!=
-    # transfer/  må være CUS7
-    # move to customer DONE
-    # duplicate back and change database access here
-
-
-    if not mysession["role"] == roles[iCustomer]:
-        flash('transfer money customer mode.','danger')
+    if not mysession["role"] == roles[iEmployee]:
+        flash('Only employees can add funds','danger')
         return redirect(url_for('Login.login'))
 
-
-    CPR_number = current_user.get_id()
-    print(CPR_number)
-    dropdown_accounts = select_cus_accounts(current_user.get_id())
-    drp_accounts = []
-    for drp in dropdown_accounts:
-        drp_accounts.append((drp[3], drp[1]+' '+str(drp[3])))
-    print(drp_accounts)
-    form = TransferForm()
-    form.sourceAccount.choices = drp_accounts
-    form.targetAccount.choices = drp_accounts
+    form = AddFundsForm()
     role=mysession["role"]
     if form.validate_on_submit():
         date = datetime.date.today()
         amount = form.amount.data
-        from_account = form.sourceAccount.data
-        to_account = form.targetAccount.data
-        transfer_account(date, amount, from_account, to_account)
+        to_customer = form.customer.data
+        update_CheckingAccount(amount, to_customer)
         flash('Transfer succeed!', 'success')
         return redirect(url_for('Login.home'))
-    return render_template('transfer.html', title='Transfer', drop_cus_acc=dropdown_accounts, form=form, role=role)
+    return render_template('addfunds.html', title='Add Funds', form=form, role=role)
 
 
 
@@ -70,11 +51,11 @@ def invest():
         flash('Please Login.','danger')
         return redirect(url_for('Login.login'))
 
-    mysession["state"]="inventory"
+    mysession["state"]="invest"
     print(mysession)
 
     role = mysession["role"]
-    return render_template('inventory.html', title='Inventory', role=role)
+    return render_template('invest.html', title='Invest', role=role)
 
 
 @Customer.route("/deposit", methods=['GET', 'POST'])

@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
 from bank.forms import CustomerLoginForm, EmployeeLoginForm, AddCustomerForm
 from flask_login import login_user, current_user, logout_user, login_required
-from bank.models import Customers, select_Customers, select_Employees, insert_Customers
+from bank.models import Customers, select_Customers, select_Employees, insert_Customers, select_cus_investments_certificates_sum
 
 #202212
 from bank import roles, mysession
@@ -21,7 +21,9 @@ def home():
     #202212
     role =  mysession["role"]
     print('role: '+ role)
-    
+    if current_user.is_authenticated:  
+        totalBal = select_cus_investments_certificates_sum(current_user.get_id())
+        return render_template('home.html', posts=posts, role=role, balance=totalBal)
     return render_template('home.html', posts=posts, role=role)
 
 
