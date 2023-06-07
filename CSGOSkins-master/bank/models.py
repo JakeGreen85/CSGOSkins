@@ -30,6 +30,18 @@ def load_user(user_id):
         return Employees(cur.fetchone()) if schema == 'employees' else Customers(cur.fetchone())
     else:
         return None
+    
+
+class Asset(tuple, UserMixin):
+    def __init__(self, user_data):
+        self.classid = user_data[0]
+        self.instanceid = user_data[1]
+        self.name = user_data[2]
+        self.price = user_data[3]
+        self.quality = user_data[4]
+        self.icon_url = user_data[5]
+    def get_id(self):
+        return (self.classid, self.instanceid)
 
 
 class Customers(tuple, UserMixin):
@@ -77,13 +89,14 @@ class Transfers(tuple):
 def create_tables():
     cur = conn.cursor()
     sql = """
-        DROP TABLE IF EXISTS asset_description;
+        DROP TABLE IF EXISTS assets;
     
-        CREATE TABLE asset_description (
+        CREATE TABLE assets (
             classid bigint,
             instanceid bigint,
             name varchar,
             price int,
+            quality varchar,
             icon_url varchar,
             PRIMARY KEY (classid, instanceid));
     """
@@ -91,15 +104,30 @@ def create_tables():
     conn.commit()
     cur.close()
     
-def insert_asset_description(classid, instanceid, name, price, icon_url):
+def insert_asset(classid, instanceid, name, price, quality, icon_url):
     cur = conn.cursor()
     sql = """
-    INSERT INTO asset_description(classid, instanceid, name, price, icon_url)
-    VALUES (%s, %s, %s, %s, %s)
+    INSERT INTO assets(classid, instanceid, name, price, quality, icon_url)
+    VALUES (%s, %s, %s, %s, %s, %s)
     """
-    cur.execute(sql, (classid, instanceid, name, price, icon_url))
+    cur.execute(sql, (classid, instanceid, name, price, quality, icon_url))
     conn.commit()
     cur.close()
+    
+def get_assets_of_quality(quality):
+    cur = conn.cursor()
+    sql = """
+    SELECT * FROM assets
+    WHERE quality = %s
+    """
+    cur.execute(sql, (quality,))
+    
+    items = []
+    for asset in cur.fetchall():
+        items.append(Asset(asset)) 
+    cur.close()
+    return items
+    
 
 def insert_Customers(name, CPR_number, password):
     cur = conn.cursor()
