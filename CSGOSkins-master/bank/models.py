@@ -73,6 +73,33 @@ class Transfers(tuple):
         self.id = user_data[0]
         self.amount = user_data[1]
         self.transfer_date = user_data[2]
+        
+def create_tables():
+    cur = conn.cursor()
+    sql = """
+        DROP TABLE IF EXISTS asset_description;
+    
+        CREATE TABLE asset_description (
+            classid bigint,
+            instanceid bigint,
+            name varchar,
+            price int,
+            icon_url varchar,
+            PRIMARY KEY (classid, instanceid));
+    """
+    cur.execute(sql)
+    conn.commit()
+    cur.close()
+    
+def insert_asset_description(classid, instanceid, name, price, icon_url):
+    cur = conn.cursor()
+    sql = """
+    INSERT INTO asset_description(classid, instanceid, name, price, icon_url)
+    VALUES (%s, %s, %s, %s, %s)
+    """
+    cur.execute(sql, (classid, instanceid, name, price, icon_url))
+    conn.commit()
+    cur.close()
 
 def insert_Customers(name, CPR_number, password):
     cur = conn.cursor()
