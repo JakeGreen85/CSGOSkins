@@ -1,3 +1,3 @@
-from bank.models import select_assets
+from bank.models import select_inventory
 
-print(select_assets()[0].price)
+print(select_inventory(1))
