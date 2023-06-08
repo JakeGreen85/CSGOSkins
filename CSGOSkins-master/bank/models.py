@@ -137,6 +137,18 @@ def insert_Customers(userid, name, password):
     # Husk commit() for INSERT og UPDATE, men ikke til SELECT!
     conn.commit()
     cur.close()
+    
+def select_assets():
+    cur = conn.cursor()
+    sql = """
+    SELECT * FROM assets
+    """
+    cur.execute(sql)
+    items = []
+    for asset in cur.fetchall():
+        items.append(Asset(asset)) 
+    cur.close()
+    return items
 
 def select_Customers(userID):
     cur = conn.cursor()
