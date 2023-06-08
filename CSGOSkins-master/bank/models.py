@@ -191,6 +191,20 @@ def transfer_account(date, amount, from_account, to_account):
     # Husk commit() for INSERT og UPDATE, men ikke til SELECT!
     conn.commit()
     cur.close()
+    
+def select_inventory(user_id):
+    cur = conn.cursor()
+    sql = """
+    SELECT assets.* FROM assets, inventory
+    WHERE inventory.user_id = %s
+    AND assets.classid = inventory.classid
+    AND assets.instanceid = inventory.instanceid
+    """
+    
+    cur.execute(sql, (user_id,))
+    tuple_resultset = cur.fetchall()
+    cur.close()
+    return tuple_resultset
 
 def select_cus_accounts(cpr_number):
     cur = conn.cursor()

@@ -1,7 +1,7 @@
 import json
 import requests # make http requests
 
-from bank.models import create_tables, insert_asset, get_assets_of_quality
+from bank.models import create_tables, insert_asset
 
 cookie = {'steamLoginSecure': '76561198070606333%7C%7CeyAidHlwIjogIkpXVCIsICJhbGciOiAiRWREU0EiIH0.eyAiaXNzIjogInI6MENFRV8yMjEzMUEzMF81MkI5RCIsICJzdWIiOiAiNzY1NjExOTgwNzA2MDYzMzMiLCAiYXVkIjogWyAid2ViIiBdLCAiZXhwIjogMTY4NTcyMjA2OCwgIm5iZiI6IDE2NzY5OTUzMTIsICJpYXQiOiAxNjg1NjM1MzEyLCAianRpIjogIjBEMzBfMjJBMDFFM0VfRjY2RUYiLCAib2F0IjogMTY3NjQxMzA2OSwgInJ0X2V4cCI6IDE2OTQ1OTI5MTcsICJwZXIiOiAwLCAiaXBfc3ViamVjdCI6ICIxODUuMTIxLjE3NC4xMzMiLCAiaXBfY29uZmlybWVyIjogIjE4NS4xMjEuMTc0LjEzMyIgfQ.rkTS3CYuYRakaZL7YQVm_LbP-3EP7PykOtj1JGi0B9nu8teiOAX4l0hQLs3GbU_QABxTC4jxO3ZWzIm2nOmkBQ'}
 imagePath = 'https://community.cloudflare.steamstatic.com/economy/image/'
@@ -40,9 +40,4 @@ def init_database():
 		quality = item['result'][itemid]['descriptions']['0']['value'][10:]
 		# print(quality)
 		insert_asset((classid), int(instanceid), name, sell_price, quality, icon_url)
-		
-	# print("")
-		
-	# for asset in get_assets_of_quality('Well-Worn'): 
-	# 	print(asset.name)
 
