@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
 from bank.forms import LoginForm, AddCustomerForm, ChangePasswordForm, ChangeUsernameForm
 from flask_login import login_user, current_user, logout_user, login_required
-from bank.models import Customers, select_Customers, select_Employees, insert_Customers, select_balance, select_assets
+from bank.models import Customers, select_Customers, select_Employees, insert_Customers, select_balance, select_assets, update_password_customer, update_password_employees, update_name_customer, update_name_employees, insert_employees, insert_balance
 
 #202212
 from bank import roles, mysession
@@ -145,7 +145,11 @@ def createaccount():
         name=form.user_name.data
         userid=form.user_id.data
         password=hashed_password
-        insert_Customers(userid, name, password)
+        if(str(userid).startswith('10')):
+            insert_employees(userid, name, password)
+        else:
+            insert_Customers(userid, name, password)
+        insert_balance(userid)
         flash('Account has been created! You can now login', 'success')
         return redirect(url_for('Login.home'))
     if(current_user.is_authenticated):
@@ -153,20 +157,18 @@ def createaccount():
     return render_template('createaccount.html', title='Create Account', form=form)
 
 @Login.route("/changepassword", methods=['GET', 'POST'])
+@login_required
 def changepassword():
 
     form = ChangePasswordForm()
     if form.validate_on_submit():
-        if bcrypt.check_password_hash(form.oldPassword.data, current_user.get_password()):
+        if bcrypt.check_password_hash(current_user.get_password(), form.oldPassword.data):
             hashed_password = bcrypt.generate_password_hash(form.newPassword.data).decode('utf-8')
             password=hashed_password
             if(str(current_user.get_id()).startswith('10')):
-                # Update employee
-                print("employee")
+                update_password_employees(current_user.get_id(), password)
             else:
-                # Update customer
-                print("Customer")
-            #UpdatePassword(user_id, password)
+                update_password_customer(current_user.get_id(), password)
             flash('Password successfully changed', 'success')
             return redirect(url_for('Login.account'))
         else:
@@ -175,16 +177,16 @@ def changepassword():
     return render_template('changepassword.html', title='Change Password', form=form, balance=select_balance(current_user.get_id()))
 
 @Login.route("/changeusername", methods=['GET', 'POST'])
+@login_required
 def changeusername():
 
     form = ChangeUsernameForm()
     if form.validate_on_submit():
         newUsername = form.user_name.data
         if(str(current_user.get_id()).startswith('10')):
-            print("Employees")
+            update_name_employees(current_user.get_id(), newUsername)
         else:
-            # Update customer
-            print("Customer")
+            update_name_customer(current_user.get_id(), newUsername)
         #UpdateUsername(user_id, newUsername)
         flash('Username successfully changed', 'success')
         return redirect(url_for('Login.account'))
