@@ -254,16 +254,16 @@ def update_name_employees(user_id, new_name):
     conn.commit()
     cur.close()
 
-# def select_balance(user_id):
-#     cur = conn.cursor()
-#     sql = """
-#         SELECT balance From a
-#     """
+def select_balance(user_id):
+    cur = conn.cursor()
+    sql = """
+        SELECT balance From accounts WHERE user_id = %s
+    """
         
-#     cur.execute(sql, (user_id,))
-#     tuple_resultset = cur.fetchall()
-#     cur.close()
-#     return tuple_resultset
+    cur.execute(sql, (user_id,))
+    balance = cur.fetchone()
+    cur.close()
+    return balance[0]
 
 def select_cus_accounts(cpr_number):
     cur = conn.cursor()

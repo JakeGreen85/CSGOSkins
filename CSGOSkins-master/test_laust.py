@@ -1,3 +1,3 @@
-from bank.models import update_name_employees
+from bank.models import select_balance
 
-update_name_employees('1001', 'bob')
+print(select_balance('2'))
