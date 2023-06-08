@@ -1,5 +1,35 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>{{ current_user.name }}'s Inventory</h1>
     <p>This is where the inventory will be displayed</p>
+    <table class="table table-striped">
+        <thead>
+         <tr>
+          <h1>{{ current_user.name }}'s Inventory</h1>
+         </tr>
+         <tr>
+           <th scope="col">Image</th>
+           <th scope="col">Name</th>
+           <th scope="col">Quality</th>
+           <th scope="col">Price</th>
+         </tr>
+         </thead>
+      <tbody>
+       {% for item in inventory %}
+         <tr>
+           <td>
+            <label for="{{ item.Image }}">{{ item.Image }}</label>
+           </td>
+           <td>
+            <label for="{{ item.name }}">{{ item.name }}</label>
+           </td>
+           <td>
+            <label for="{{ item.Quality }}">{{ item.Quality }}</label>
+           </td>
+           <td>
+            <label for="{{ item.Price }}">{{ item.Price }}</label>
+           </td>
+         </tr>
+       {% endfor %}
+      </tbody>
+   </table>
 {% endblock content %}
