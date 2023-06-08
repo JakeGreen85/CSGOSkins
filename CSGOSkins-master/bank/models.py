@@ -38,8 +38,8 @@ class Asset(tuple, UserMixin):
         self.instanceid = user_data[1]
         self.name = user_data[2]
         self.price = user_data[3]
-        self.quality = user_data[4]
-        self.icon_url = user_data[5]
+        self.icon_url = user_data[4]
+        self.quality = user_data[5]
     def get_id(self):
         return (self.classid, self.instanceid)
 
