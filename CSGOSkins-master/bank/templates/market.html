@@ -1,7 +1,5 @@
 {% extends "layout.html" %}
-{% block content %} 
-	<p>Display all items</p>
-    <p>This is where the inventory will be displayed</p>
+{% block content %}
     <table class="table table-striped">
         <thead>
          <tr>
@@ -18,10 +16,10 @@
        {% for item in all_items %}
          <tr>
            <td>
-            <label for="{{ item.Image }}">{{ item.classid }}</label>
+            <label for="{{ item.Image }}"><img src= "{{ item.image }}" alt="No Image" style="width:10px;height:10px"></label>
            </td>
            <td>
-            <label for="{{ item.name }}">{{ item.name }}</label>
+            <label for="{{ item.Name }}">{{ item.name }}</label>
            </td>
            <td>
             <label for="{{ item.Quality }}">{{ item.quality }}</label>
