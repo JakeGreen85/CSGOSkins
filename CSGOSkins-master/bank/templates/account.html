@@ -1,7 +1,41 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>{{ current_user.name }}'s Account</h1>
-    <p>This is where certain information will be displayed about the user</p>
-    <a href="{{ url_for('Login.changeusername') }}">Change Username</a>
-    <a href="{{ url_for('Login.changepassword') }}">Change Password</a>
+    <table class="table table-striped">
+        <thead>
+         <tr>
+			<h1>{{ current_user.name }}'s Account</h1>
+         </tr>
+         </thead>
+      <tbody>
+          <tr>
+           <td>
+            <h4>User ID:</h4>
+           </td>
+           <td>
+            <h4>{{ current_user.id }}</h4>
+           </td>
+         </tr>
+         <tr>
+            <td>
+             <h4>Username:</h4>
+            </td>
+            <td>
+             <h4>{{ current_user.name }} (<a href="{{ url_for('Login.changeusername') }}">Change</a>)</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+             <h4>Role:</h4>
+            </td>
+            <td>
+             <h4>{{ current_user.role }}</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+                <a href="{{ url_for('Login.changepassword') }}">Change Password</a>
+            </td>
+          </tr>
+      </tbody>
+   </table>
 {% endblock content %}
