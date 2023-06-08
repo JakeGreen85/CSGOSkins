@@ -1,7 +1,37 @@
 {% extends "layout.html" %}
 {% block content %} 
-    <h1>Market</h1>
 	<p>Display all items</p>
-	<p>Add some filters</p>
+    <p>This is where the inventory will be displayed</p>
+    <table class="table table-striped">
+        <thead>
+         <tr>
+			<h1>Market</h1>
+         </tr>
+         <tr>
+           <th scope="col">Image</th>
+           <th scope="col">Name</th>
+           <th scope="col">Quality</th>
+           <th scope="col">Price</th>
+         </tr>
+         </thead>
+      <tbody>
+       {% for item in all_items %}
+         <tr>
+           <td>
+            <label for="{{ item.Image }}">{{ item.classid }}</label>
+           </td>
+           <td>
+            <label for="{{ item.name }}">{{ item.name }}</label>
+           </td>
+           <td>
+            <label for="{{ item.Quality }}">{{ item.quality }}</label>
+           </td>
+           <td>
+            <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
+           </td>
+         </tr>
+       {% endfor %}
+      </tbody>
+   </table>
 {% endblock content %}
 

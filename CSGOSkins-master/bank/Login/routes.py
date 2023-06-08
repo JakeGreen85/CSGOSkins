@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
 from bank.forms import LoginForm, AddCustomerForm, ChangePasswordForm, ChangeUsernameForm
 from flask_login import login_user, current_user, logout_user, login_required
-from bank.models import Customers, select_Customers, select_Employees, insert_Customers, select_balance
+from bank.models import Customers, select_Customers, select_Employees, insert_Customers, select_balance, select_assets
 
 #202212
 from bank import roles, mysession
@@ -134,7 +134,8 @@ def market():
     mysession["state"]="market"
     print(mysession)      
     role=mysession["role"]
-    return render_template('market.html', title='Market', role=role, balance=select_balance(current_user.get_id()))
+    all_items = select_assets()
+    return render_template('market.html', title='Market', role=role, all_items=all_items, balance=select_balance(current_user.get_id()))
 
 @Login.route("/createaccount", methods=['GET', 'POST'])
 def createaccount():

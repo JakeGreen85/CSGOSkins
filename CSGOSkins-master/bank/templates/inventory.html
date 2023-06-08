@@ -14,22 +14,22 @@
          </tr>
          </thead>
       <tbody>
-       {% for item in inventory %}
-         <tr>
-           <td>
-            <label for="{{ item.Image }}">{{ item.Image }}</label>
-           </td>
-           <td>
-            <label for="{{ item.name }}">{{ item.name }}</label>
-           </td>
-           <td>
-            <label for="{{ item.Quality }}">{{ item.Quality }}</label>
-           </td>
-           <td>
-            <label for="{{ item.Price }}">{{ item.Price }}</label>
-           </td>
-         </tr>
-       {% endfor %}
+        {% for item in inventory %}
+        <tr>
+          <td>
+           <label for="{{ item.Image }}">{{ item.classid }}</label>
+          </td>
+          <td>
+           <label for="{{ item.name }}">{{ item.name }}</label>
+          </td>
+          <td>
+           <label for="{{ item.Quality }}">{{ item.quality }}</label>
+          </td>
+          <td>
+           <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
+          </td>
+        </tr>
+      {% endfor %}
       </tbody>
    </table>
 {% endblock content %}
