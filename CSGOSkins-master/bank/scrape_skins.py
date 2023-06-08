@@ -38,6 +38,6 @@ def init_database():
 		
 		name = item['result'][itemid]['name']	
 		quality = item['result'][itemid]['descriptions']['0']['value'][10:]
-		# print(quality)
+		
 		insert_asset((classid), int(instanceid), name, sell_price, quality, icon_url)
 

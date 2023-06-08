@@ -206,6 +206,65 @@ def select_inventory(user_id):
     cur.close()
     return tuple_resultset
 
+def update_password_customer(user_id, new_password):
+    cur = conn.cursor()
+    sql = """
+    UPDATE customers 
+    SET password = %s
+    WHERE customers.user_id = %s
+    """
+        
+    cur.execute(sql, (new_password, user_id))
+    conn.commit()
+    cur.close()
+    
+def update_password_employees(user_id, new_password):
+    cur = conn.cursor()
+    sql = """
+    UPDATE employees 
+    SET password = %s
+    WHERE employees.user_id = %s
+    """
+            
+    cur.execute(sql, (new_password, user_id))
+    conn.commit()
+    cur.close()
+    
+def update_name_customer(user_id, new_name):
+    cur = conn.cursor()
+    sql = """
+    UPDATE customers 
+    SET name = %s
+    WHERE customers.user_id = %s
+    """
+        
+    cur.execute(sql, (new_name, user_id))
+    conn.commit()
+    cur.close()
+    
+def update_name_employees(user_id, new_name):
+    cur = conn.cursor()
+    sql = """
+    UPDATE employees 
+    SET name = %s
+    WHERE employees.user_id = %s
+    """
+            
+    cur.execute(sql, (new_name, user_id))
+    conn.commit()
+    cur.close()
+
+# def select_balance(user_id):
+#     cur = conn.cursor()
+#     sql = """
+#         SELECT balance From a
+#     """
+        
+#     cur.execute(sql, (user_id,))
+#     tuple_resultset = cur.fetchall()
+#     cur.close()
+#     return tuple_resultset
+
 def select_cus_accounts(cpr_number):
     cur = conn.cursor()
     sql = """

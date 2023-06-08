@@ -45,9 +45,4 @@ from bank.Employee.routes import Employee
 app.register_blueprint(Login)
 app.register_blueprint(Customer)
 app.register_blueprint(Employee)
-
-from bank.models import select_inventory
-
-# select_inventory('0001')
-
 #from bank import routes
