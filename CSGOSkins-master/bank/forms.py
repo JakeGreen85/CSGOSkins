@@ -22,10 +22,10 @@ class ChangePasswordForm(FlaskForm):
     submit = SubmitField('Change Password')
 
 class ChangeUsernameForm(FlaskForm):
-    user_name = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    user_name = StringField('New Username', validators=[DataRequired(), Length(min=2, max=20)])
     submit = SubmitField('Change Username')
 
 class AddFundsForm(FlaskForm):
-    customer = IntegerField('Customer ID', validators=[DataRequired()])
+    customer = IntegerField('User ID', validators=[DataRequired()])
     amount = IntegerField('Amount', validators=[DataRequired()])
     submit = SubmitField('Add Funds')

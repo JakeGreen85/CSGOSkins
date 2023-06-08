@@ -1,8 +1,8 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
 from bank.forms import AddFundsForm
-from flask_login import current_user
-from bank.models import select_inventory
+from flask_login import current_user, login_required
+from bank.models import select_inventory, update_balance, select_balance, select_Customers
 
 
 import sys, datetime
@@ -32,12 +32,12 @@ def addfunds():
     role=mysession["role"]
     if form.validate_on_submit():
         date = datetime.date.today()
-        amount = form.amount.data
         to_customer = form.customer.data
-        # UpdateBalance(amount, to_customer)
+        amount = form.amount.data + select_balance(to_customer)
+        update_balance(to_customer, amount)
         flash('Transfer succeed!', 'success')
         return redirect(url_for('Login.home'))
-    return render_template('addfunds.html', title='Add Funds', form=form, role=role)
+    return render_template('addfunds.html', title='Add Funds', form=form, role=role, balance=select_balance(current_user.get_id()))
 
 
 
@@ -58,4 +58,12 @@ def invest():
 def inventory():
     role=mysession["role"]
     inventory = select_inventory(current_user.get_id())
-    return render_template('inventory.html', title="Inventory", role=role, inventory = inventory)
+    return render_template('inventory.html', title="Inventory", role=role, inventory = inventory, balance=select_balance(current_user.get_id()))
+
+@Customer.route("/account")
+@login_required
+def account():
+    mysession["state"]="account"
+    print(mysession)
+    role=mysession["role"]
+    return render_template('account.html', title='Account', role=role, balance=select_balance(current_user.get_id()), user=select_Customers(current_user.get_id()))
