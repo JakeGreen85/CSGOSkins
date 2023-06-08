@@ -34,15 +34,7 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if current_user.is_authenticated %}
-                {% if balance %}
-                <p class="nav-item nav-link">Balance: ${{ balance }}</p>
-                {% endif %}
-
-                <a href="#" class="nav-item nav-link dropdown-toggle" data-toggle="dropdown">{{ current_user.name }}<b class="caret"></b></a>
-                 <ul class="dropdown-menu">
-                    <li><a class="nav-item nav-link" href="{{ url_for('Login.account') }}">Account</a></li>
-                    <li><a class="nav-item nav-link" href="{{ url_for('Login.logout') }}">Logout</a></li>
-                 </ul>
+                <p class="nav-item nav-link">Signed in</p>
               {% else %}
                 <a class="nav-item nav-link" href="{{ url_for('Login.login') }}">Login</a>
                 <a class="nav-item nav-link" href="{{ url_for('Login.createaccount') }}">Sign-up</a>
@@ -76,18 +68,22 @@
 				
 			   {% if role == 'customer' %}
 			        <p>Customer</p> 
-              <li class="list-group-item list-group-item-light">Balance: $0</li>
+              <li class="list-group-item list-group-item-light">Balance: ${{ balance }}</li>
                 <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Customer.addfunds') }}">Add Funds</a></li>
                 <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Customer.inventory') }}">Inventory</a></li>
+                <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Customer.account') }}">Account</a></li>
+                <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Login.logout') }}">Logout</a></li>
  			   {% endif %}
 
 
 			      {% if role == 'employee' %}
 			        <p>Employee</p> 
-              <li class="list-group-item list-group-item-light">Balance: $0</li>
+              <li class="list-group-item list-group-item-light">Balance: ${{ balance }}</li>
               <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Employee.addfunds') }}">Add Funds</a></li>
                 <li class="list-group-item list-group-item-light">Add Item</li>
                 <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Employee.inventory') }}">Inventory</a></li>
+                <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Employee.account') }}">Account</a></li>
+                <li class="list-group-item list-group-item-light"><a class="nav-item nav-link" href="{{ url_for('Login.logout') }}">Logout</a></li>
  			      {% endif %}
               {% endif %}
               </ul>
