@@ -10,7 +10,7 @@ def load_user(user_id):
 
     schema = 'customers'
     id = 'user_id'
-    if str(user_id).startswith('60'):
+    if str(user_id).startswith('10'):
         schema = 'employees'
         id = 'user_id'
 
@@ -53,6 +53,9 @@ class Customers(tuple, UserMixin):
 
     def get_id(self):
        return (self.CPR_number)
+    
+    def get_password(self):
+        return (self.password)
 
 class Employees(tuple, UserMixin):
     def __init__(self, employee_data):
@@ -151,6 +154,7 @@ def select_assets():
     return items
 
 def select_Customers(userID):
+    print("customer")
     cur = conn.cursor()
     sql = """
     SELECT * FROM Customers
@@ -162,6 +166,7 @@ def select_Customers(userID):
     return user
 
 def select_Employees(userID):
+    print("employee")
     cur = conn.cursor()
     sql = """
     SELECT * FROM Employees

@@ -1,8 +1,8 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
-from bank.forms import LoginForm, AddCustomerForm
+from bank.forms import LoginForm, AddCustomerForm, ChangePasswordForm, ChangeUsernameForm
 from flask_login import login_user, current_user, logout_user, login_required
-from bank.models import Customers, select_Customers, select_Employees, insert_Customers, select_cus_investments_certificates_sum
+from bank.models import Customers, select_Customers, select_Employees, insert_Customers, select_balance
 
 #202212
 from bank import roles, mysession
@@ -22,7 +22,7 @@ def home():
     role =  mysession["role"]
     print('role: '+ role)
     if current_user.is_authenticated:  
-        return render_template('home.html', posts=posts, role=role, balance=1000)
+        return render_template('home.html', posts=posts, role=role, balance=select_balance(current_user.get_id()))
     return render_template('home.html', posts=posts, role=role)
 
 
@@ -32,6 +32,8 @@ def about():
     mysession["state"]="about"
     print(mysession)
     role=mysession["role"]
+    if current_user.is_authenticated:  
+        return render_template('about.html', title='About', role=role, balance=select_balance(current_user.get_id()))
     return render_template('about.html', title='About', role=role)
 
 
@@ -60,12 +62,11 @@ def login():
         # eller om det er et customer login.
         # betinget tildeling. Enten en employee - eller en customer instantieret
         # Skal muligvis laves om. Hvad hvis nu user ikke blir instantieret
-        user = select_Employees(form.id.data) if len(str(form.id.data)) == 4 else select_Customers(form.id.data)
-        is_employee = True if len(str(form.id.data)) == 4 else False
+        user = select_Employees(form.id.data) if str(form.id.data).startswith('10') else select_Customers(form.id.data)
         
         # Derefter tjek om hashet af adgangskoden passer med det fra databasen...
         # Her checkes om der er logget på
-        if user != None and bcrypt.check_password_hash(user[1], form.password.data):
+        if user != None and bcrypt.check_password_hash(user.password, form.password.data):
             
             #202212
             print("role:" + user.role)
@@ -101,8 +102,7 @@ def login():
 
     #return render_template('login.html', title='Login', is_employee=is_employee, form=form)
     return render_template('login.html', title='Login', form=form
-    , teachers=teachers, parents=parents, students=students, role=role
-    )
+    , teachers=teachers, parents=parents, students=students, role=role)
 #teachers={{"id": str(1234), "name":"anders"},}
 #data={"user_id": str(user_id), "total_trials":total_trials}
 
@@ -124,7 +124,7 @@ def account():
     mysession["state"]="account"
     print(mysession)
     role=mysession["role"]
-    return render_template('account.html', title='Account', role=role)
+    return render_template('account.html', title='Account', role=role, balance=select_balance(current_user.get_id()))
 
 @Login.route("/market")
 def market():
@@ -134,18 +134,57 @@ def market():
     mysession["state"]="market"
     print(mysession)      
     role=mysession["role"]
-    return render_template('market.html', title='Market', role=role)
+    return render_template('market.html', title='Market', role=role, balance=select_balance(current_user.get_id()))
 
 @Login.route("/createaccount", methods=['GET', 'POST'])
 def createaccount():
-
     form = AddCustomerForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        name=form.username.data
-        userid=form.CPR_number.data
+        name=form.user_name.data
+        userid=form.user_id.data
         password=hashed_password
         insert_Customers(userid, name, password)
         flash('Account has been created! You can now login', 'success')
         return redirect(url_for('Login.home'))
+    if(current_user.is_authenticated):
+        return render_template('createaccount.html', title='Create Account', form=form, balance=select_balance(current_user.get_id()))
     return render_template('createaccount.html', title='Create Account', form=form)
+
+@Login.route("/changepassword", methods=['GET', 'POST'])
+def changepassword():
+
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if bcrypt.check_password_hash(form.oldPassword.data, current_user.get_password()):
+            hashed_password = bcrypt.generate_password_hash(form.newPassword.data).decode('utf-8')
+            password=hashed_password
+            if(str(current_user.get_id()).startswith('10')):
+                # Update employee
+                print("employee")
+            else:
+                # Update customer
+                print("Customer")
+            #UpdatePassword(user_id, password)
+            flash('Password successfully changed', 'success')
+            return redirect(url_for('Login.account'))
+        else:
+            flash('Something went wrong', 'danger')
+            return redirect(url_for('Login.home'))
+    return render_template('changepassword.html', title='Change Password', form=form, balance=select_balance(current_user.get_id()))
+
+@Login.route("/changeusername", methods=['GET', 'POST'])
+def changeusername():
+
+    form = ChangeUsernameForm()
+    if form.validate_on_submit():
+        newUsername = form.user_name.data
+        if(str(current_user.get_id()).startswith('10')):
+            print("Employees")
+        else:
+            # Update customer
+            print("Customer")
+        #UpdateUsername(user_id, newUsername)
+        flash('Username successfully changed', 'success')
+        return redirect(url_for('Login.account'))
+    return render_template('changeusername.html', title='Change Username', form=form, balance=select_balance(current_user.get_id()))

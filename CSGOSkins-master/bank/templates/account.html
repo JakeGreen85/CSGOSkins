@@ -2,4 +2,6 @@
 {% block content %}
     <h1>{{ current_user.name }}'s Account</h1>
     <p>This is where certain information will be displayed about the user</p>
+    <a href="{{ url_for('Login.changeusername') }}">Change Username</a>
+    <a href="{{ url_for('Login.changepassword') }}">Change Password</a>
 {% endblock content %}

@@ -11,8 +11,8 @@ VALUES (0001,'$2b$12$KFkp1IEMGT4QrWwjPGhE3ejOv6Z3pYhx/S4qOoFbanR2sMiZqgeJO', 'Ja
 
 -- INSERT EMPLOYEES
 INSERT INTO public.Employees(User_id, name, password)
-VALUES (1001, 'Jakob',  '$2b$12$KFkp1IEMGT4QrWwjPGhE3ejOv6Z3pYhx')
-, (1002, 'Laust',  '$2b$12$KFkp1IEMGT4QrWwjPGhE3ejOv6Z3pYhx/S4qOoFbanR2sMiZqgeJO');
+VALUES (1001, 'Jakob', '$2b$12$KFkp1IEMGT4QrWwjPGhE3ejOv6Z3pYhx/S4qOoFbanR2sMiZqgeJO')
+, (1002, 'Laust', '$2b$12$KFkp1IEMGT4QrWwjPGhE3ejOv6Z3pYhx/S4qOoFbanR2sMiZqgeJO');
 
 -- INSERT ACCOUNTS
 INSERT INTO public.accounts(User_id, Balance) VALUES (0001, 5000), (0002, 10000);
