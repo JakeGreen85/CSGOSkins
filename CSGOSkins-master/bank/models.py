@@ -90,9 +90,7 @@ class Transfers(tuple):
 def create_tables():
     cur = conn.cursor()
     sql = """
-        DROP TABLE IF EXISTS assets;
-    
-        CREATE TABLE assets (
+        CREATE TABLE IF NOT EXISTS assets (
             classid bigint,
             instanceid bigint,
             name varchar,
