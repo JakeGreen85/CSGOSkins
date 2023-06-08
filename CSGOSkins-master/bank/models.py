@@ -144,7 +144,7 @@ def select_Customers(userID):
     SELECT * FROM Customers
     WHERE User_id = %s
     """
-    cur.execute(sql, (userID))
+    cur.execute(sql, (userID,))
     user = Customers(cur.fetchone()) if cur.rowcount > 0 else None;
     cur.close()
     return user
@@ -155,7 +155,7 @@ def select_Employees(userID):
     SELECT * FROM Employees
     WHERE User_id = %s
     """
-    cur.execute(sql, (userID))
+    cur.execute(sql, (userID,))
     user = Employees(cur.fetchone()) if cur.rowcount > 0 else None;
     cur.close()
     return user
