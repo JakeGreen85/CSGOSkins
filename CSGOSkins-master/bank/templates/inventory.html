@@ -10,14 +10,14 @@
            <th scope="col">Image</th>
            <th scope="col">Name</th>
            <th scope="col">Quality</th>
-           <th scope="col">Price</th>
+           <th scope="col">Value</th>
          </tr>
          </thead>
       <tbody>
         {% for item in inventory %}
         <tr>
           <td>
-           <label for="{{ item.Image }}"><img src=" {{ item.image }} " alt="No Image"></label>
+            <img src= "{{ item.icon_url }}" alt="No Image" style="width:64px;height:64px"/>
           </td>
           <td>
            <label for="{{ item.name }}">{{ item.name }}</label>
@@ -26,7 +26,7 @@
            <label for="{{ item.Quality }}">{{ item.quality }}</label>
           </td>
           <td>
-           <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
+            <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
           </td>
         </tr>
       {% endfor %}

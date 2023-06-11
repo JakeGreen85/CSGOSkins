@@ -27,6 +27,13 @@
            <td>
             <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
            </td>
+           <td>
+            <form action = "/BuyAsset" method="POST">
+               <input type="hidden" value="{{item.classid}}" name="classid">
+               <input type="hidden" value="{{item.instanceid}}" name="instanceid">
+               <input type="submit" value="BUY" name = "buyAction">
+            </form>
+           </td>
          </tr>
        {% endfor %}
       </tbody>

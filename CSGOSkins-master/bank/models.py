@@ -227,9 +227,11 @@ def select_inventory(user_id):
     """
     
     cur.execute(sql, (user_id,))
-    tuple_resultset = cur.fetchall()
+    inventory = []
+    for asset in cur.fetchall():
+        inventory.append(Asset(asset)) 
     cur.close()
-    return tuple_resultset
+    return inventory
 
 def update_password_customer(user_id, new_password):
     cur = conn.cursor()
@@ -312,8 +314,9 @@ def insert_balance(user_id):
 def add_to_inventory(classid, instanceid, userid):
     cur = conn.cursor()
     sql = """
-    INSERT INTO Inventory(classid, instanceid, userid)
+    INSERT INTO Inventory(classid, instanceid, user_id)
     VALUES (%s, %s, %s)
     """
     cur.execute(sql, (classid, instanceid, userid))
+    conn.commit()
     cur.close()
