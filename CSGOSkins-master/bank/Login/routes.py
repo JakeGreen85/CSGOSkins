@@ -3,6 +3,7 @@ from bank import app, conn, bcrypt
 from bank.forms import LoginForm, AddCustomerForm, ChangePasswordForm, ChangeUsernameForm
 from flask_login import login_user, current_user, logout_user, login_required
 from bank.models import Customers, select_Customers, select_Employees, insert_Customers, select_balance, select_assets, update_password_customer, update_password_employees, update_name_customer, update_name_employees, insert_employees, insert_balance
+import random
 
 #202212
 from bank import roles, mysession
@@ -21,8 +22,13 @@ def home():
     #202212
     role =  mysession["role"]
     print('role: '+ role)
+    all_items = select_assets()
+    random_items = []
+    ranint = random.randint(0, 10)
+    for i in range(0, 100, 10):
+        random_items.append(all_items[ranint+i])
     if current_user.is_authenticated:  
-        return render_template('home.html', posts=posts, role=role, balance=select_balance(current_user.get_id()))
+        return render_template('home.html', posts=posts, role=role, balance=select_balance(current_user.get_id()), all_items=random_items)
     return render_template('home.html', posts=posts, role=role)
 
 
