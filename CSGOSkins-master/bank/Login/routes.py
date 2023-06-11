@@ -26,7 +26,7 @@ def home():
     random_items = []
     ranint = random.randint(0, 10)
     for i in range(0, 100, 10):
-        random_items.append(all_items[ranint+i])
+        random_items.append(all_items[(ranint+i)%len(all_items)])
     if current_user.is_authenticated:  
         return render_template('home.html', posts=posts, role=role, balance=select_balance(current_user.get_id()), all_items=random_items)
     return render_template('home.html', posts=posts, role=role)

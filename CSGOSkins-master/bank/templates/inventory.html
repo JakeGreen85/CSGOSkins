@@ -20,13 +20,13 @@
             <img src= "{{ item.icon_url }}" alt="No Image" style="width:64px;height:64px"/>
           </td>
           <td>
-           <label for="{{ item.name }}">{{ item.name }}</label>
+           <label>{{ item.name }}</label>
           </td>
           <td>
-           <label for="{{ item.Quality }}">{{ item.quality }}</label>
+           <label>{{ item.quality }}</label>
           </td>
           <td>
-            <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
+            <label>${{ item.price / 100 }}</label>
           </td>
         </tr>
       {% endfor %}

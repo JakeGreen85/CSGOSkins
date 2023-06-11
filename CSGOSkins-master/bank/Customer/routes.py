@@ -69,15 +69,18 @@ def account():
     role=mysession["role"]
     return render_template('account.html', title='Account', role=role, balance=select_balance(current_user.get_id()), user=select_Customers(current_user.get_id()))
 
-@Customer.route("/BuyAsset",  methods=['GET', 'POST'])
+@Customer.route("/",  methods=['GET', 'POST'])
 @login_required
 def buy_button():
     
     if request.method == 'POST':
         classid = request.form.get('classid')
         instanceid =request.form.get('instanceid')
+        price = int(request.form.get('price'))
         user_id = current_user.get_id()
         add_to_inventory(classid, instanceid, user_id)
+        old_balance = select_balance(user_id)
+        update_balance(user_id, old_balance - price)
         
     
     if not current_user.is_authenticated:
