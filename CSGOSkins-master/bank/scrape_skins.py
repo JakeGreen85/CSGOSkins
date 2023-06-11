@@ -9,7 +9,7 @@ webAPIKey = 'C34AF91C568BBF6D3D031292210741A3'
 token = 'ce4090bc6a3c4acbaf7f6d05b5eb5888'
 steamID = '76561198070606333'
 gameID = '730'
-count = '50'
+count = '100'
 
 
 def init_database():

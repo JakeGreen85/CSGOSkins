@@ -2,4 +2,35 @@
 {% block content %}
     <h1>Welcome to CSGO Market!</h1>
     <p>Check out the hottest items of the day below, or use the navigation bar at the top</p>
+    <table class="table table-striped">
+        <thead>
+         <tr>
+			<h1>Market</h1>
+         </tr>
+         <tr>
+           <th scope="col">Image</th>
+           <th scope="col">Name</th>
+           <th scope="col">Quality</th>
+           <th scope="col">Price</th>
+         </tr>
+         </thead>
+      <tbody>
+       {% for item in all_items %}
+          <tr>
+           <td>
+            <img src= "{{ item.icon_url }}" alt="No Image" style="width:64px;height:64px"/>
+           </td>
+           <td>
+            <label for="{{ item.Name }}">{{ item.name }}</label>
+           </td>
+           <td>
+            <label for="{{ item.Quality }}">{{ item.quality }}</label>
+           </td>
+           <td>
+            <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
+           </td>
+         </tr>
+       {% endfor %}
+      </tbody>
+   </table>
 {% endblock content %}
