@@ -149,15 +149,68 @@ def insert_employees(userid, name, password):
     conn.commit()
     cur.close()
     
-def select_assets():
+def select_assets(minprice, maxprice):
     cur = conn.cursor()
     sql = """
     SELECT * FROM assets
+    WHERE price > %i AND price < %i
     """
-    cur.execute(sql)
+    cur.execute(sql, (minprice, maxprice))
     items = []
     for asset in cur.fetchall():
         items.append(Asset(asset)) 
+    cur.close()
+    return items
+
+def filter_assets_name(name, minprice, maxprice):
+    cur = conn.cursor()
+    sql = """
+    SELECT * FROM assets
+    WHERE name == %s and price > %i and price < %i
+    """
+    cur.execute(sql, (name, minprice, maxprice))
+    items = []
+    for asset in cur.fetchall():
+        items.append(Asset(asset))
+    cur.close()
+    return items
+
+def filter_assets_quality(quality, minprice, maxprice):
+    cur = conn.cursor()
+    sql = """
+    SELECT * FROM assets
+    WHERE quality == %s and price > %i and price < %i
+    """
+    cur.execute(sql, (quality, minprice, maxprice))
+    items = []
+    for asset in cur.fetchall():
+        items.append(Asset(asset))
+    cur.close()
+    return items
+
+def filter_assets_name_and_quality(name, quality, minprice, maxprice):
+    cur = conn.cursor()
+    sql = """
+    SELECT * FROM assets
+    WHERE name == %s and quality == %s and price > %i and price < %i
+    """
+    cur.execute(sql, (name, quality, minprice, maxprice))
+    items = []
+    for asset in cur.fetchall():
+        items.append(Asset(asset))
+    cur.close()
+    return items
+
+def filter_assets(name, quality, minprice, maxprice):
+    cur = conn.cursor()
+    sql = """
+    SELECT * FROM assets
+    WHERE name == %s and quality == %s and price > %i and price < %i
+    """
+    cur.execute(sql, (name, quality, minprice, maxprice))
+    items = []
+    for asset in cur.fetchall():
+        items.append(Asset(asset))
     cur.close()
     return items
 

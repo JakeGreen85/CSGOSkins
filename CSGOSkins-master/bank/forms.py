@@ -29,3 +29,9 @@ class AddFundsForm(FlaskForm):
     customer = IntegerField('User ID', validators=[DataRequired()])
     amount = IntegerField('Amount', validators=[DataRequired()])
     submit = SubmitField('Add Funds')
+
+class MarketFilterForm(FlaskForm):
+    name = StringField('Name')
+    quality = SelectField('Quality', choices=['Battle-Scarred', 'Well-Worn', 'Field-Tested', 'Minimal Wear', 'Factory New'])
+    maxprice = IntegerField('Max Price')
+    minprice = IntegerField('Min Price')

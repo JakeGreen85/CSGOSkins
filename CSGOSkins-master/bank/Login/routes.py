@@ -1,8 +1,8 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
-from bank.forms import LoginForm, AddCustomerForm, ChangePasswordForm, ChangeUsernameForm
+from bank.forms import LoginForm, AddCustomerForm, ChangePasswordForm, ChangeUsernameForm, MarketFilterForm
 from flask_login import login_user, current_user, logout_user, login_required
-from bank.models import Customers, select_Customers, select_Employees, insert_Customers, select_balance, select_assets, update_password_customer, update_password_employees, update_name_customer, update_name_employees, insert_employees, insert_balance
+from bank.models import Customers, select_Customers, select_Employees, insert_Customers, select_balance, select_assets, update_password_customer, update_password_employees, update_name_customer, update_name_employees, insert_employees, insert_balance, filter_assets, filter_assets_name, filter_assets_name_and_quality, filter_assets_quality
 import random
 
 #202212
@@ -119,13 +119,27 @@ def account():
 
 @Login.route("/market")
 def market():
+    minprice = 0
+    maxprice = 10000000
     if not current_user.is_authenticated:
         flash('You must be logged in to access this page', 'danger')
         return redirect(url_for('Login.home'))    
     mysession["state"]="market"
+    form = MarketFilterForm()
+    name = form.name.data
+    quality = form.quality.data
+    minprice = form.minprice.data
+    maxprice = form.maxprice.data
     print(mysession)      
     role=mysession["role"]
-    all_items = select_assets()
+    if name and quality:
+        all_items = filter_assets_name_and_quality(name, quality, minprice, maxprice)
+    elif name:
+        all_items = filter_assets_name(name, minprice, maxprice)
+    elif quality:
+        all_items = filter_assets_quality(quality, minprice, maxprice)
+    else:
+        all_items = select_assets()
     return render_template('market.html', title='Market', role=role, all_items=all_items, balance=select_balance(current_user.get_id()))
 
 @Login.route("/createaccount", methods=['GET', 'POST'])

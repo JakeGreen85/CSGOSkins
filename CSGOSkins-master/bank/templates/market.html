@@ -1,5 +1,66 @@
 {% extends "layout.html" %}
 {% block content %}
+<div class="content-section">
+   <form method="POST" action="">
+       {{ form.hidden_tag() }}
+       <fieldset class="form-group">
+           <legend class="border-bottom mb-4">Create Account</legend>
+           <div class="form-group">
+               {{ form.name.label(class="form-control-label") }}
+
+               {% if form.name.errors %}
+                   {{ form.name(class="form-control form-control-lg is-invalid") }}
+                   <div class="invalid-feedback">
+                       {% for error in form.name.errors %}
+                           <span>{{ error }}</span>
+                       {% endfor %}
+                   </div>
+               {% else %}
+                   {{ form.name(class="form-control form-control-lg") }}
+               {% endif %}
+           </div>
+           <div class="form-group">
+               {{ form.quality.label(class="form-control-label") }}
+               {% if form.quality.errors %}
+                   {{ form.quality(class="form-control form-control-lg is-invalid") }}
+                   <div class="invalid-feedback">
+                       {% for error in form.quality.errors %}
+                           <span>{{ error }}</span>
+                       {% endfor %}
+                   </div>
+               {% else %}
+                   {{ form.quality(class="form-control form-control-lg") }}
+               {% endif %}
+           </div>
+           <div class="form-group">
+            {{ form.minprice.label(class="form-control-label") }}
+
+            {% if form.minprice.errors %}
+                {{ form.minprice(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.minprice.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.minprice(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+        <div class="form-group">
+            {{ form.maxprice.label(class="form-control-label") }}
+            {% if form.maxprice.errors %}
+                {{ form.maxprice(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.maxprice.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.maxprice(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+   </form>
+</div>
     <table class="table table-striped">
         <thead>
          <tr>
