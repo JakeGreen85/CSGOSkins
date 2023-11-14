@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fc089b9218301ad987914c53481bff04'
 
 # set your own database
-db = "dbname='CSGO' user='postgres' host='127.0.0.1' password = '123' port='5432'"
+db = "dbname='CSGO' user='postgres' host='127.0.0.1' password = '123' port='9876'"
 
 conn = psycopg2.connect(db)
 
