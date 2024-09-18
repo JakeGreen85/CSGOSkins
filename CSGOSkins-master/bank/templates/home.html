@@ -12,6 +12,7 @@
            <th scope="col">Name</th>
            <th scope="col">Quality</th>
            <th scope="col">Price</th>
+           <th scope="col">Quantity</th>
          </tr>
          </thead>
       <tbody>
@@ -28,6 +29,9 @@
            </td>
            <td>
             <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
+           </td>
+           <td>
+            <label for="{{ item.Quantity }}">{{ item.quantity }}</label>
            </td>
          </tr>
        {% endfor %}

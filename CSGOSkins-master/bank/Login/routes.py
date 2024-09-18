@@ -119,27 +119,13 @@ def account():
 
 @Login.route("/market")
 def market():
-    minprice = 0
-    maxprice = 10000000
     if not current_user.is_authenticated:
         flash('You must be logged in to access this page', 'danger')
         return redirect(url_for('Login.home'))    
     mysession["state"]="market"
-    form = MarketFilterForm()
-    name = form.name.data
-    quality = form.quality.data
-    minprice = form.minprice.data
-    maxprice = form.maxprice.data
     print(mysession)      
     role=mysession["role"]
-    if name and quality:
-        all_items = filter_assets_name_and_quality(name, quality, minprice, maxprice)
-    elif name:
-        all_items = filter_assets_name(name, minprice, maxprice)
-    elif quality:
-        all_items = filter_assets_quality(quality, minprice, maxprice)
-    else:
-        all_items = select_assets()
+    all_items = select_assets()
     return render_template('market.html', title='Market', role=role, all_items=all_items, balance=select_balance(current_user.get_id()))
 
 @Login.route("/createaccount", methods=['GET', 'POST'])

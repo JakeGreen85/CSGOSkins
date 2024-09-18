@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS Assets(
 	price int,
 	icon_url varchar(300),
 	quality varchar(100),
+	quantity int,
 	PRIMARY KEY (classid, instanceid)
 );
 

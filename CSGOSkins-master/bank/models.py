@@ -40,6 +40,7 @@ class Asset(tuple, UserMixin):
         self.price = user_data[3]
         self.icon_url = user_data[4]
         self.quality = user_data[5]
+        self.quantity = user_data[6]
     def get_id(self):
         return (self.classid, self.instanceid)
 
@@ -103,16 +104,59 @@ def create_tables():
     conn.commit()
     cur.close()
     
-def insert_asset(classid, instanceid, name, price, quality, icon_url):
+def insert_asset(classid, instanceid, name, price, quality, icon_url, quantity):
     cur = conn.cursor()
     sql = """
-    INSERT INTO assets(classid, instanceid, name, price, quality, icon_url)
-    VALUES (%s, %s, %s, %s, %s, %s)
+    INSERT INTO assets(classid, instanceid, name, price, quality, icon_url, quantity)
+    VALUES (%s, %s, %s, %s, %s, %s, %s)
     """
-    cur.execute(sql, (classid, instanceid, name, price, quality, icon_url))
+    cur.execute(sql, (classid, instanceid, name, price, quality, icon_url, quantity))
+    conn.commit()
+    cur.close()
+
+def remove_asset(classid):
+    cur = conn.cursor()
+    sql = """
+    DELETE FROM assets WHERE classid = %s
+    """
+    cur.execute(sql, (classid,))
+    conn.commit()
+    cur.close()
+
+def get_quantity(classid):
+    cur = conn.cursor()
+    sql = """
+    SELECT quantity FROM assets
+    WHERE classid = %s
+    """
+    cur.execute(sql, (classid, ))
+    quantity = cur.fetchall()
+    conn.commit()
+    cur.close()
+    return quantity[0][0]
+
+def decrease_quantity(classid, quantity):
+    cur = conn.cursor()
+    sql = """
+    UPDATE assets
+    SET quantity = %s 
+    WHERE classid = %s
+    """
+    cur.execute(sql, (quantity-1, classid))
     conn.commit()
     cur.close()
     
+def increase_quantity(classid, quantity):
+    cur = conn.cursor()
+    sql = """
+    UPDATE assets
+    SET quantity = %s 
+    WHERE classid = %s
+    """
+    cur.execute(sql, (quantity+1, classid))
+    conn.commit()
+    cur.close()
+
 def get_assets_of_quality(quality):
     cur = conn.cursor()
     sql = """
@@ -149,13 +193,12 @@ def insert_employees(userid, name, password):
     conn.commit()
     cur.close()
     
-def select_assets(minprice, maxprice):
+def select_assets():
     cur = conn.cursor()
     sql = """
     SELECT * FROM assets
-    WHERE price > %i AND price < %i
     """
-    cur.execute(sql, (minprice, maxprice))
+    cur.execute(sql)
     items = []
     for asset in cur.fetchall():
         items.append(Asset(asset)) 
@@ -222,7 +265,7 @@ def select_Customers(userID):
     WHERE User_id = %s
     """
     cur.execute(sql, (userID,))
-    user = Customers(cur.fetchone()) if cur.rowcount > 0 else None;
+    user = Customers(cur.fetchone()) if cur.rowcount > 0 else None
     cur.close()
     return user
 

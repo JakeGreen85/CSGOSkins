@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
 from bank.forms import AddFundsForm
 from flask_login import current_user, login_required
-from bank.models import select_inventory, update_balance, select_balance, select_Customers, select_assets, add_to_inventory
+from bank.models import select_inventory, update_balance, select_balance, select_Customers, select_assets, add_to_inventory, decrease_quantity, get_quantity
 
 
 import sys, datetime
@@ -78,14 +78,19 @@ def buy_button():
         instanceid =request.form.get('instanceid')
         price = int(request.form.get('price'))
         user_id = current_user.get_id()
-        add_to_inventory(classid, instanceid, user_id)
-        old_balance = select_balance(user_id)
-        update_balance(user_id, old_balance - price)
+        if(select_balance(user_id) < price):
+            flash('Not enough funds!', 'danger')
+        else:
+            add_to_inventory(classid, instanceid, user_id)
+            decrease_quantity(classid, get_quantity(classid))
+            old_balance = select_balance(user_id)
+            update_balance(user_id, old_balance - price)
+            flash('Item has been added to your inventory!', 'success')
         
     
     if not current_user.is_authenticated:
         flash('You must be logged in to access this page', 'danger')
-        return redirect(url_for('Login.home'))    
+        return redirect(url_for('Login.home'))  
     mysession["state"]="market"
     print(mysession)      
     role=mysession["role"]

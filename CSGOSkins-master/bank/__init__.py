@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fc089b9218301ad987914c53481bff04'
 
 # set your own database
-db = "dbname='CSGO' user='postgres' host='127.0.0.1' password = '123' port='9876'"
+db = "dbname='CSGO' user='postgres' host='127.0.0.1' password = '123' port='7628'"
 
 conn = psycopg2.connect(db)
 
@@ -31,9 +31,9 @@ login_manager.login_message_category = 'info'
 
 #202212
 roles = ["ingen","employee","customer"]
-print(roles)
 mysession = {"state" : "initializing","role" : "Not assingned", "id": 0 ,"age" : 202212}
-print(mysession)
+
+print(conn.info.port)
 
 from bank.Login.routes import Login
 from bank.Customer.routes import Customer

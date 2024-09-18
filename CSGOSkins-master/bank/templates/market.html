@@ -1,96 +1,40 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="content-section">
-   <form method="POST" action="">
-       {{ form.hidden_tag() }}
-       <fieldset class="form-group">
-           <legend class="border-bottom mb-4">Create Account</legend>
-           <div class="form-group">
-               {{ form.name.label(class="form-control-label") }}
-
-               {% if form.name.errors %}
-                   {{ form.name(class="form-control form-control-lg is-invalid") }}
-                   <div class="invalid-feedback">
-                       {% for error in form.name.errors %}
-                           <span>{{ error }}</span>
-                       {% endfor %}
-                   </div>
-               {% else %}
-                   {{ form.name(class="form-control form-control-lg") }}
-               {% endif %}
-           </div>
-           <div class="form-group">
-               {{ form.quality.label(class="form-control-label") }}
-               {% if form.quality.errors %}
-                   {{ form.quality(class="form-control form-control-lg is-invalid") }}
-                   <div class="invalid-feedback">
-                       {% for error in form.quality.errors %}
-                           <span>{{ error }}</span>
-                       {% endfor %}
-                   </div>
-               {% else %}
-                   {{ form.quality(class="form-control form-control-lg") }}
-               {% endif %}
-           </div>
-           <div class="form-group">
-            {{ form.minprice.label(class="form-control-label") }}
-
-            {% if form.minprice.errors %}
-                {{ form.minprice(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.minprice.errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-            {% else %}
-                {{ form.minprice(class="form-control form-control-lg") }}
-            {% endif %}
-        </div>
-        <div class="form-group">
-            {{ form.maxprice.label(class="form-control-label") }}
-            {% if form.maxprice.errors %}
-                {{ form.maxprice(class="form-control form-control-lg is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.maxprice.errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-            {% else %}
-                {{ form.maxprice(class="form-control form-control-lg") }}
-            {% endif %}
-        </div>
-   </form>
-</div>
-    <table class="table table-striped">
-        <thead>
-         <tr>
-			<h1>Market</h1>
-         </tr>
-         <tr>
-           <th scope="col">Image</th>
-           <th scope="col">Name</th>
-           <th scope="col">Quality</th>
-           <th scope="col">Price</th>
-         </tr>
-         </thead>
-      <tbody>
-       {% for item in all_items %}
-          <tr>
-           <td>
-            <img src= "{{ item.icon_url }}" alt="No Image" style="width:64px;height:64px"/>
-           </td>
-           <td>
-            <label for="{{ item.Name }}">{{ item.name }}</label>
-           </td>
-           <td>
-            <label for="{{ item.Quality }}">{{ item.quality }}</label>
-           </td>
-           <td>
-            <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
-           </td>
-           <td>
-            <form action = "/" method="POST">
-               <input type="hidden" value="{{item.classid}}" name="classid">
+    </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <h1>Market</h1>
+            </tr>
+            <tr>
+            <th scope="col">Image</th>
+            <th scope="col">Name</th>
+            <th scope="col">Quality</th>
+            <th scope="col">Price</th>
+            <th scope="col">Quantity</th>
+            </tr>
+            </thead>
+        <tbody>
+        {% for item in all_items %}
+            <tr>
+            <td>
+                <img src= "{{ item.icon_url }}" alt="No Image" style="width:64px;height:64px"/>
+            </td>
+            <td>
+                <label for="{{ item.Name }}">{{ item.name }}</label>
+            </td>
+            <td>
+                <label for="{{ item.Quality }}">{{ item.quality }}</label>
+            </td>
+            <td>
+                <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
+            </td>
+            <td>
+                <label for="{{ item.Quantity }}">{{ item.quantity }}</label>
+            </td>
+            <td>
+                <form action = "/" method="POST">
+                <input type="hidden" value="{{item.classid}}" name="classid">
                <input type="hidden" value="{{item.instanceid}}" name="instanceid">
                <input type="hidden" value="{{item.price}}" name="price">
                <input type="submit" value="BUY" name = "buyAction">
