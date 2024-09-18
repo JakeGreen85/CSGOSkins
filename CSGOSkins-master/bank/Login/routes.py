@@ -29,7 +29,7 @@ def home():
         random_items.append(all_items[(ranint+i)%len(all_items)])
     if current_user.is_authenticated:  
         return render_template('home.html', posts=posts, role=role, balance=select_balance(current_user.get_id()), all_items=random_items)
-    return render_template('home.html', posts=posts, role=role)
+    return render_template('home.html', posts=posts, role=role, all_items=random_items)
 
 
 @Login.route("/about")
