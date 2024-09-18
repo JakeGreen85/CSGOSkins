@@ -1,23 +1,23 @@
 body {
-    background: #fafafa;
-    color: #333333;
+    background: hsl(0, 0%, 10%);
+    color: #de9b35;
     margin-top: 5rem;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    color: #444444;
+h1, h2, h3, h4, h5, h6, a {
+    color: #d5d5d5;
 }
 
 .bg-steel {
-    background-color: #5f788a;
+    background-color: #303030;
 }
 
 .site-header .navbar-nav .nav-link {
-    color: #cbd5db;
+    color: #6a6a6a;
 }
 
 .site-header .navbar-nav .nav-link:hover {
-    color: #ffffff;
+    color: #de9b35;
 }
 
 .site-header .navbar-nav .nav-link.active {
@@ -25,23 +25,41 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .site-header .dropdown-menu > li > .nav-item.nav-link {
-    color: #495057;
+    color: #de9b35;
 }
 
 .site-header .dropdown-menu > li > .nav-item.nav-link:hover {
-    color: #798592;
+    color: #de9b35;
 }
 
 .content-section {
-    background: #ffffff;
+    position: fixed;
+    width: 400px;
+    background: #303030;
     padding: 10px 20px;
-    border: 1px solid #dddddd;
     border-radius: 3px;
     margin-bottom: 20px;
 }
 
+.content-section .list-group {
+    color: #de9b35;
+    background: transparent;
+}
+
+.content-section .list-group .list-group-item {
+    background: transparent;
+}
+
+.content-section .list-group .list-group-item a {
+    color: white;
+}
+
+.content-section .list-group .list-group-item a:hover {
+    color: #de9b35;
+}
+
 .article-title {
-    color: #444444;
+    color: #5d79ae;
 }
 
 a.article-title:hover {
@@ -62,7 +80,7 @@ a.article-title:hover {
 .article-metadata {
     padding-bottom: 1px;
     margin-bottom: 4px;
-    border-bottom: 1px solid #e3e3e3
+    border-bottom: 1px solid #6a6a6a
 }
 
 .article-metadata a:hover {
@@ -85,4 +103,38 @@ a.article-title:hover {
 
 .account-heading {
     font-size: 2.5rem;
+}
+
+
+.btn-outline-info{
+    color: #de9b35;
+    border-color: white;
+}
+
+.btn-outline-info:hover{
+    background-color: #de9b35;
+    border-color: white;
+}
+
+.table-striped a {
+    color: #de9b35;
+}
+
+.submit-button input[type="submit"] {
+    color: #de9b35;
+    background: #303030;
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for the button */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.submit-button input[type="submit"]:hover {
+    color: #303030;
+    background-color: #de9b35; /* Darker shade on hover */
+    cursor: pointer;
+}
+
+.small-text a {
+    color: #de9b35;
 }

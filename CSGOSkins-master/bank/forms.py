@@ -26,8 +26,8 @@ class ChangeUsernameForm(FlaskForm):
     submit = SubmitField('Change Username')
 
 class AddFundsForm(FlaskForm):
-    customer = IntegerField('User ID', validators=[DataRequired()])
     amount = IntegerField('Amount', validators=[DataRequired()])
+    customer = IntegerField('User ID', validators=[DataRequired()])
     submit = SubmitField('Add Funds')
 
 class MarketFilterForm(FlaskForm):

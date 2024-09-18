@@ -2,40 +2,43 @@
 {% block content %}
     <table class="table table-striped">
         <thead>
-         <tr>
-			<h1>{{ current_user.name }}'s Account</h1>
-         </tr>
-         </thead>
-      <tbody>
-          <tr>
-           <td>
-            <h4>User ID:</h4>
-           </td>
-           <td>
-            <h4>{{ current_user.id }}</h4>
-           </td>
-         </tr>
-         <tr>
-            <td>
-             <h4>Username:</h4>
-            </td>
-            <td>
-             <h4>{{ current_user.name }} (<a href="{{ url_for('Login.changeusername') }}">Change</a>)</h4>
-            </td>
-          </tr>
-          <tr>
-            <td>
-             <h4>Role:</h4>
-            </td>
-            <td>
-             <h4>{{ current_user.role }}</h4>
-            </td>
-          </tr>
-          <tr>
-            <td>
-                <a href="{{ url_for('Login.changepassword') }}">Change Password</a>
-            </td>
-          </tr>
-      </tbody>
-   </table>
+            <tr>
+			        <h1>{{ current_user.name }}'s Account</h1>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <h4>User ID:</h4>
+                </td>
+                <td>
+                    <h4>{{ current_user.userid }}</h4>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Username:</h4>
+                </td>
+                <td>
+                    <h4>{{ current_user.name }} (<a href="{{ url_for('Login.changeusername') }}">Change</a>)</h4>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h4>Role:</h4>
+                </td>
+                <td>
+                    <h4>{{ current_user.role }}</h4>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="{{ url_for('Login.changepassword') }}">Change Password</a>
+                </td>
+                <td>
+                  
+              </td>
+            </tr>
+        </tbody>
+    </table>
 {% endblock content %}

@@ -114,12 +114,24 @@ def insert_asset(classid, instanceid, name, price, quality, icon_url, quantity):
     conn.commit()
     cur.close()
 
-def remove_asset(classid):
+def remove_from_inventory(classid, instanceid, userid):
     cur = conn.cursor()
     sql = """
-    DELETE FROM assets WHERE classid = %s
+    SELECT * FROM inventory
+    WHERE classid = %s
+    AND instanceid = %s
+    AND user_id = %s
     """
-    cur.execute(sql, (classid,))
+    cur.execute(sql, (classid, instanceid, userid))
+    index = len(cur.fetchall()) - 1
+    sql = """
+    DELETE FROM inventory 
+    WHERE classid = %s
+    AND instanceid = %s
+    AND user_id = %s
+    AND ind = %s
+    """
+    cur.execute(sql, (classid, instanceid, userid, index))
     conn.commit()
     cur.close()
 
@@ -170,7 +182,7 @@ def get_assets_of_quality(quality):
         items.append(Asset(asset)) 
     cur.close()
     return items
-    
+
 
 def insert_Customers(userid, name, password):
     cur = conn.cursor()
@@ -197,6 +209,7 @@ def select_assets():
     cur = conn.cursor()
     sql = """
     SELECT * FROM assets
+    WHERE quantity > 0
     """
     cur.execute(sql)
     items = []
@@ -289,7 +302,6 @@ def update_CheckingAccount(amount, userid):
     WHERE userid = %s
     """ 
     cur.execute(sql, (amount, userid))
-    # Husk commit() for INSERT og UPDATE, men ikke til SELECT!
     conn.commit()
     cur.close()
 
@@ -388,6 +400,12 @@ def select_balance(user_id):
 
 def update_balance(user_id, amount):
     cur = conn.cursor()
+    amount -= select_balance(user_id)
+    print(amount)
+    amount *= 100
+    print(amount)
+    amount += select_balance(user_id)
+    print(amount)
     sql = """
     UPDATE accounts
     SET balance = %s
@@ -410,9 +428,15 @@ def insert_balance(user_id):
 def add_to_inventory(classid, instanceid, userid):
     cur = conn.cursor()
     sql = """
-    INSERT INTO Inventory(classid, instanceid, user_id)
-    VALUES (%s, %s, %s)
+    SELECT * FROM inventory
+    WHERE user_id = %s
     """
-    cur.execute(sql, (classid, instanceid, userid))
+    cur.execute(sql, (userid, ))
+    index = len(cur.fetchall())
+    sql = """
+    INSERT INTO Inventory(classid, instanceid, user_id, ind)
+    VALUES (%s, %s, %s, %s)
+    """
+    cur.execute(sql, (classid, instanceid, userid, index))
     conn.commit()
     cur.close()

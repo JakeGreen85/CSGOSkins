@@ -1,7 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
-from bank.forms import AddCustomerForm
-from bank.forms import AddFundsForm
+from bank.forms import AddCustomerForm, AddFundsForm
 from flask_login import current_user, login_required
 from bank.models import insert_Customers, update_balance, select_balance, select_Employees
 import sys, datetime
@@ -55,9 +54,10 @@ def addfunds():
 
     form = AddFundsForm()
     role=mysession["role"]
+
     if form.validate_on_submit():
         to_customer = form.customer.data
-        amount = form.amount.data + select_balance(to_customer)
+        amount = form.amount.data
         update_balance(to_customer, amount)
         flash('Transfer succeed!', 'success')
         return redirect(url_for('Login.home'))

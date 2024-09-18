@@ -27,6 +27,7 @@ def home():
     ranint = random.randint(0, 10)
     for i in range(0, 100, 10):
         random_items.append(all_items[(ranint+i)%len(all_items)])
+        random_items = random_items[:6]
     if current_user.is_authenticated:  
         return render_template('home.html', posts=posts, role=role, balance=select_balance(current_user.get_id()), all_items=random_items)
     return render_template('home.html', posts=posts, role=role, all_items=random_items)
@@ -46,32 +47,20 @@ def about():
 @Login.route("/login", methods=['GET', 'POST'])
 def login():
     
-    #202212
     mysession["state"]="login"
     print(mysession)
     role=None
     
-    # jeg tror det her betyder at man er er logget på, men har redirected til login
-    # så kald formen igen
-    # men jeg forstår det ikke
     if current_user.is_authenticated:
         return redirect(url_for('Login.home'))    
     
     form = LoginForm()
     
-    # Først bekræft, at inputtet fra formen er gyldigt... (f.eks. ikke tomt)
     if form.validate_on_submit():
         print(form.id.data)
-        #"202212"
-        # her checkes noget som skulle være sessionsvariable, men som er en GET-parameter
-        # implementeret af AL. Ideen er at teste på om det er et employee login
-        # eller om det er et customer login.
-        # betinget tildeling. Enten en employee - eller en customer instantieret
-        # Skal muligvis laves om. Hvad hvis nu user ikke blir instantieret
+
         user = select_Employees(form.id.data) if str(form.id.data).startswith('10') else select_Customers(form.id.data)
         
-        # Derefter tjek om hashet af adgangskoden passer med det fra databasen...
-        # Her checkes om der er logget på
         if user != None and bcrypt.check_password_hash(user.password, form.password.data):
             
             #202212
@@ -101,7 +90,6 @@ def login():
 
 @Login.route("/logout")
 def logout():
-    #202212
     mysession["state"]="logout"
     print(mysession)
 

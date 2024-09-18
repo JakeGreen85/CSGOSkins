@@ -1,48 +1,46 @@
 {% extends "layout.html" %}
 {% block content %}
-    </div>
-        <table class="table table-striped">
-            <thead>
+    <h1>Market</h1>
+    <table class="table table-striped">
+        <thead>
             <tr>
-                <h1>Market</h1>
+                <th scope="col">Image</th>
+                <th scope="col">Name</th>
+                <th scope="col">Quality</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
             </tr>
-            <tr>
-            <th scope="col">Image</th>
-            <th scope="col">Name</th>
-            <th scope="col">Quality</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
-            </tr>
-            </thead>
+        </thead>
         <tbody>
         {% for item in all_items %}
             <tr>
-            <td>
-                <img src= "{{ item.icon_url }}" alt="No Image" style="width:64px;height:64px"/>
-            </td>
-            <td>
-                <label for="{{ item.Name }}">{{ item.name }}</label>
-            </td>
-            <td>
-                <label for="{{ item.Quality }}">{{ item.quality }}</label>
-            </td>
-            <td>
-                <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
-            </td>
-            <td>
-                <label for="{{ item.Quantity }}">{{ item.quantity }}</label>
-            </td>
-            <td>
-                <form action = "/" method="POST">
-                <input type="hidden" value="{{item.classid}}" name="classid">
-               <input type="hidden" value="{{item.instanceid}}" name="instanceid">
-               <input type="hidden" value="{{item.price}}" name="price">
-               <input type="submit" value="BUY" name = "buyAction">
-            </form>
-           </td>
-         </tr>
-       {% endfor %}
-      </tbody>
-   </table>
+                <td>
+                    <img src= "{{ item.icon_url }}" alt="No Image" style="width:64px;height:64px"/>
+                </td>
+                <td>
+                    <label for="{{ item.Name }}">{{ item.name }}</label>
+                </td>
+                <td>
+                    <label for="{{ item.Quality }}">{{ item.quality }}</label>
+                </td>
+                <td>
+                    <label for="{{ item.Price }}">${{ item.price / 100 }}</label>
+                </td>
+                <td>
+                    <label for="{{ item.Quantity }}">{{ item.quantity }}</label>
+                </td>
+                <td>
+                    <div class="submit-button">
+                        <form action = "/buy" method="POST">
+                        <input type="hidden" value="{{item.classid}}" name="classid">
+                        <input type="hidden" value="{{item.instanceid}}" name="instanceid">
+                        <input type="hidden" value="{{item.price}}" name="price">
+                        <input type="submit" value="BUY" name = "buyAction">
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock content %}
-

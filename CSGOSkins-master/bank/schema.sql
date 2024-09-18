@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS Accounts(
 CREATE TABLE IF NOT EXISTS Inventory(
 	classid bigint,
 	instanceid bigint,
-	User_id integer
+	User_id integer,
+	ind integer
 );
 
 -- INSERT CUSTOMERS

@@ -28,6 +28,16 @@
           <td>
             <label>${{ item.price / 100 }}</label>
           </td>
+          <td>
+            <div class="submit-button">
+              <form action = "/sell" method="POST">
+              <input type="hidden" value="{{item.classid}}" name="classid">
+             <input type="hidden" value="{{item.instanceid}}" name="instanceid">
+             <input type="hidden" value="{{item.price}}" name="price">
+             <input type="submit" value="SELL" name = "sellAction">
+          </form>
+            </div>
+       </td>
         </tr>
       {% endfor %}
       </tbody>

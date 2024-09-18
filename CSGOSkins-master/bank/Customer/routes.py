@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, Blueprint
 from bank import app, conn, bcrypt
 from bank.forms import AddFundsForm
 from flask_login import current_user, login_required
-from bank.models import select_inventory, update_balance, select_balance, select_Customers, select_assets, add_to_inventory, decrease_quantity, get_quantity
+from bank.models import select_inventory, update_balance, select_balance, select_Customers, select_assets, add_to_inventory, decrease_quantity, get_quantity, increase_quantity, remove_from_inventory
 
 
 import sys, datetime
@@ -58,7 +58,6 @@ def invest():
 def inventory():
     role=mysession["role"]
     inventory = select_inventory(current_user.get_id())
-    print(inventory)
     return render_template('inventory.html', title="Inventory", role=role, inventory = inventory, balance=select_balance(current_user.get_id()))
 
 @Customer.route("/account")
@@ -69,7 +68,7 @@ def account():
     role=mysession["role"]
     return render_template('account.html', title='Account', role=role, balance=select_balance(current_user.get_id()), user=select_Customers(current_user.get_id()))
 
-@Customer.route("/",  methods=['GET', 'POST'])
+@Customer.route("/buy",  methods=['GET', 'POST'])
 @login_required
 def buy_button():
     
@@ -96,3 +95,27 @@ def buy_button():
     role=mysession["role"]
     all_items = select_assets()
     return render_template('market.html', title='Market', role=role, all_items=all_items, balance=select_balance(current_user.get_id()))
+
+@Customer.route("/sell",  methods=['GET', 'POST'])
+@login_required
+def sell_button():
+    
+    if request.method == 'POST':
+        classid = request.form.get('classid')
+        instanceid = request.form.get('instanceid')
+        price = int(request.form.get('price'))
+        user_id = current_user.get_id()
+        remove_from_inventory(classid, instanceid, user_id)
+        increase_quantity(classid, get_quantity(classid))
+        old_balance = select_balance(user_id)
+        update_balance(user_id, old_balance + price)
+        flash('Item has been removed from your inventory!', 'success')
+    
+    if not current_user.is_authenticated:
+        flash('You must be logged in to access this page', 'danger')
+        return redirect(url_for('Login.home'))  
+    mysession["state"]="inventory"
+    print(mysession)      
+    role=mysession["role"]
+    inventory = select_inventory(current_user.get_id())
+    return render_template('inventory.html', title="Inventory", role=role, inventory = inventory, balance=select_balance(current_user.get_id()))
